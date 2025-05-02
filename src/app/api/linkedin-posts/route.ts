@@ -25,7 +25,7 @@ export async function GET(req: NextRequest) {
 
     if (elementHandle) {
       const parent = await elementHandle.evaluateHandle((useEl) => {
-        let el = useEl as HTMLElement;
+        let el = useEl as unknown as HTMLElement;
         while (el && el.nodeName !== 'BUTTON' && el.nodeName !== 'svg') {
           el = el.parentElement!;
         }
