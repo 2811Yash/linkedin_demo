@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
-import puppeteer from 'puppeteer';
+import puppeteer from 'puppeteer'; // ✅ Runtime import
+import type { ElementHandle } from 'puppeteer'; // ✅ Type-only import
 
 export async function GET(req: NextRequest) {
   try {
@@ -18,8 +19,6 @@ export async function GET(req: NextRequest) {
     await page.waitForSelector('button[data-litms-control-urn="login-submit"]');
     await page.click('button[data-litms-control-urn="login-submit"]');
    
-    
-    
     await page.waitForSelector('svg use[href="#search-medium"]', { timeout: 80000 });
     const elementHandle = await page.$('svg use[href="#search-medium"]');
 
@@ -33,7 +32,7 @@ export async function GET(req: NextRequest) {
       });
 
       if (parent) {
-        await (parent as puppeteer.ElementHandle<Element>).click();
+        await (parent as ElementHandle<Element>).click(); // ✅ Fix applied here
       }
     }
 
@@ -51,7 +50,6 @@ export async function GET(req: NextRequest) {
       }
     }
 
-    // Scroll to load more posts
     for (let i = 0; i < 5; i++) {
       await page.keyboard.press('Space');
       await new Promise(resolve => setTimeout(resolve, 2000));
